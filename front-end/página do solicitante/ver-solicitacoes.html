@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Solicitações</title>
+</head>
+<body>
+
+    <h1>Minhas Solicitações</h1>
+
+    <div id="area-solicitacoes"></div>
+
+    <script>
+        // simulação: lista de solicitações fictícias
+        const solicitacoesFake = [
+            { id: 1, titulo: "solicitação A", status: "Pendente" },
+            { id: 2, titulo: "solicitação B", status: "Aprovado" },
+            { id: 3, titulo: "solicitação C", status: "Negado" }
+        ];
+
+        const area = document.getElementById("area-solicitacoes");
+
+        function renderSolicitacoes(lista) {
+            if (lista.length === 0) {
+                area.innerHTML = "<p>Nenhuma solicitação encontrada.</p>";
+                return;
+            }
+
+            let html = "<ul>";
+            lista.forEach(item => {
+                html += `
+                    <li>
+                        <strong>${item.titulo}</strong> — 
+                        <em>Status: ${item.status}</em>
+                    </li>
+                `;
+            });
+            html += "</ul>";
+
+            area.innerHTML = html;
+        }
+
+        // isso aqui simula o carregamento de dados pelo que eu entendi
+        renderSolicitacoes(solicitacoesFake);
+    </script>
+
+</body>
+</html>
