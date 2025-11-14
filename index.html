@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conecta Cidadania — Cadastro do Cidadão</title>
+  <style>
+    :root{
+      --gov-blue:#1351B4;
+      --gov-blue-700:#0e3e88;
+      --gov-green:#2E7D32;
+      --gov-green-700:#1f5a23;
+      --gov-gray:#f4f6f8;
+      --border:#dfe3e8;
+      --danger:#c62828;
+      --warning:#F57C00;
+      --focus:#26a69a;
+      --text:#1b1f23;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;color:var(--text);background:#fff}
+    a{color:var(--gov-blue)}
+    
+    .topbar{background:var(--gov-blue);color:#fff}
+    .topbar .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:14px 20px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+    .brand .logo{width:28px;height:28px;background:#fff;border-radius:4px;display:grid;place-items:center;color:var(--gov-blue);font-weight:800}
+    .service-title{font-size:16px;opacity:.95}
+    
+    .crumbs{background:#0f47a1;color:#e9eef9;font-size:12px}
+    .crumbs .wrap{max-width:1100px;margin:0 auto;padding:8px 20px}
+    .crumbs a{color:#cfe0ff;text-decoration:none}
+    .crumbs span{opacity:.85}
+
+    
+    .container{max-width:1100px;margin:18px auto;padding:0 20px}
+    .grid{display:grid;grid-template-columns:280px 1fr;gap:20px}
+    @media (max-width:960px){.grid{grid-template-columns:1fr}}
+
+    
+    .stepper{background:var(--gov-gray);border:1px solid var(--border);border-radius:12px;padding:14px}
+    .step{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;margin-bottom:8px;border:1px solid transparent;background:#fff}
+    .step.active{border-color:var(--gov-blue);box-shadow:0 0 0 2px rgba(19,81,180,.08)}
+    .step .badge{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--gov-blue);color:#fff;font-weight:700}
+    .step.done .badge{background:#1aa34a}
+    .step .title{font-weight:600}
+    .step small{display:block;color:#5e6a7a}
+    .step button{all:unset;cursor:pointer;flex:1}
+
+    
+    .card{border:1px solid var(--border);border-radius:12px;background:#fff;overflow:hidden}
+    .card-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fafbfc}
+    .card-title{font-weight:700}
+    .card-body{padding:16px}
+
+    .alert{border-left:4px solid var(--warning);background:#FFF3E0;color:#4E342E;padding:12px 14px;border-radius:8px;margin:12px 0}
+    .alert strong{display:block;margin-bottom:4px}
+
+    
+    fieldset{border:none;margin:0;padding:0}
+    legend{font-weight:700;margin:10px 0 8px}
+    .form-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .col-12{grid-column:span 12}
+    .col-8{grid-column:span 8}
+    .col-6{grid-column:span 6}
+    .col-4{grid-column:span 4}
+    .col-3{grid-column:span 3}
+    @media (max-width:720px){.col-8,.col-6,.col-4,.col-3{grid-column:span 12}}
+
+    label{font-size:12px;color:#364152;display:block;margin:6px 0}
+    input[type="text"],input[type="email"],input[type="tel"],input[type="date"],input[type="number"],select,textarea{
+      width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff
+    }
+    textarea{min-height:80px;resize:vertical}
+    input:focus,select:focus,textarea:focus{outline:3px solid rgba(38,166,154,.25);border-color:var(--focus)}
+
+    
+    .avatar{width:140px;height:140px;border:2px dashed var(--border);border-radius:12px;display:grid;place-items:center;margin-top:8px}
+    .avatar small{color:#6b7785}
+
+    
+    .upload{border:2px dashed var(--border);border-radius:12px;padding:16px;text-align:center}
+    .upload p{margin:6px 0 0;color:#6b7785;font-size:12px}
+
+    
+    .actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;padding:16px;border-top:1px solid var(--border);background:#fafbfc}
+    .btn{border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+    .btn-primary{background:var(--gov-green);color:#fff}
+    .btn-primary:hover{background:var(--gov-green-700)}
+    .btn-sec{background:#e9eff8;color:#0f3f89}
+    .btn-sec:hover{background:#dbe7fb}
+
+    .muted{color:#6b7785;font-size:12px}
+    .required:after{content:" *";color:var(--danger)}
+
+    
+    footer{margin:40px 0 20px;color:#7a8796;text-align:center;font-size:12px}
+  </style>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="wrap">
+      <div class="brand" aria-label="gov.br">
+        <div class="logo" aria-hidden="true">br</div>
+        <div>
+          <div style="font-size:18px">gov.br</div>
+          <div class="service-title">Conecta Cidadania — Cadastro do Cidadão</div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav class="crumbs" aria-label="Você está em">
+    <div class="wrap">
+      <a href="#">Início</a> › <a href="#">Programas</a> › <span>Conecta Cidadania</span> › <strong>Inscrição</strong>
+    </div>
+  </nav>
+
+  <main class="container" role="main">
+    <div class="grid">
+      <!-- Stepper -->
+      <aside class="stepper" aria-label="Etapas da inscrição">
+        <div class="step active"><span class="badge" aria-hidden="true">1</span><button data-step="1"><span class="title">Dados Pessoais</span><small>Informações básicas</small></button></div>
+        <div class="step"><span class="badge" aria-hidden="true">2</span><button data-step="2"><span class="title">Família e Situação Social</span><small>Renda e benefícios</small></button></div>
+        <div class="step"><span class="badge" aria-hidden="true">3</span><button data-step="3"><span class="title">Formação Acadêmica</span><small>Escolaridade e cursos</small></button></div>
+        <div class="step"><span class="badge" aria-hidden="true">4</span><button data-step="4"><span class="title">Experiência</span><small>Histórico profissional</small></button></div>
+        <div class="step"><span class="badge" aria-hidden="true">5</span><button data-step="5"><span class="title">Competências</span><small>Preferências de trabalho</small></button></div>
+        <div class="step"><span class="badge" aria-hidden="true">6</span><button data-step="6"><span class="title">Inclusão</span><small>PCD e adaptação</small></button></div>
+        <div class="step"><span class="badge" aria-hidden="true">7</span><button data-step="7"><span class="title">Questionário</span><small>Motivação</small></button></div>
+        <div class="step"><span class="badge" aria-hidden="true">8</span><button data-step="8"><span class="title">Anexos</span><small>Comprovantes</small></button></div>
+      </aside>
+
+      <!-- Content -->
+      <section class="card" aria-live="polite">
+        <div class="card-header">
+          <div class="card-title">Inscrição — Dados do Cidadão</div>
+          <div class="muted">Campos com * são obrigatórios</div>
+        </div>
+        <div class="card-body">
+          <div class="alert" role="note">
+            <strong>Importante</strong>
+            Após preencher as etapas, clique em <em>Salvar</em>. Você poderá revisar tudo antes de <em>Finalizar Inscrição</em>.
+          </div>
+
+          <!-- STEP 1 -->
+          <form id="step-1" class="step-pane" aria-hidden="false">
+            <fieldset class="form-grid">
+              <legend>Dados Pessoais</legend>
+              <div class="col-8">
+                <label for="nome" class="required">Nome completo</label>
+                <input id="nome" type="text" placeholder="Digite seu nome" required>
+              </div>
+              <div class="col-4" aria-label="Foto de perfil">
+                <label>Foto de perfil (opcional)</label>
+                <div class="avatar" role="button" tabindex="0" aria-label="Enviar foto">
+                  <div>👤</div>
+                  <small>Clique para enviar</small>
+                </div>
+              </div>
+              <div class="col-4">
+                <label for="cpf" class="required">CPF</label>
+                <input id="cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" required>
+              </div>
+              <div class="col-4">
+                <label for="rg">RG</label>
+                <input id="rg" type="text" placeholder="Número do RG">
+              </div>
+              <div class="col-4">
+                <label for="dt">Data de nascimento</label>
+                <input id="dt" type="date">
+              </div>
+              <div class="col-6">
+                <label for="sexo">Sexo</label>
+                <select id="sexo">
+                  <option value="">Selecione</option>
+                  <option>Feminino</option>
+                  <option>Masculino</option>
+                  <option>Outro/Prefiro não informar</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="raca">Cor/raça (IBGE)</label>
+                <select id="raca">
+                  <option value="">Selecione</option>
+                  <option>Branca</option>
+                  <option>Preta</option>
+                  <option>Parda</option>
+                  <option>Amarela</option>
+                  <option>Indígena</option>
+                  <option>Prefiro não informar</option>
+                </select>
+              </div>
+              <div class="col-12"><legend>Endereço</legend></div>
+              <div class="col-4">
+                <label for="estado" class="required">Estado</label>
+                <select id="estado" required>
+                  <option value="">UF</option>
+                  <option>BA</option><option>MG</option><option>RJ</option><option>SP</option>
+                  <option>PR</option><option>SC</option><option>RS</option>
+                </select>
+              </div>
+              <div class="col-4">
+                <label for="municipio" class="required">Município</label>
+                <input id="municipio" type="text" required>
+              </div>
+              <div class="col-4">
+                <label for="cep">CEP</label>
+                <input id="cep" type="text" inputmode="numeric" placeholder="00000-000">
+              </div>
+              <div class="col-8">
+                <label for="logradouro">Logradouro</label>
+                <input id="logradouro" type="text" placeholder="Rua, avenida...">
+              </div>
+              <div class="col-2">
+                <label for="numero">Número</label>
+                <input id="numero" type="text">
+              </div>
+              <div class="col-2">
+                <label for="bairro">Bairro</label>
+                <input id="bairro" type="text">
+              </div>
+              <div class="col-12">
+                <label for="compl">Complemento</label>
+                <input id="compl" type="text">
+              </div>
+              <div class="col-12"><legend>Contato</legend></div>
+              <div class="col-6">
+                <label for="cel" class="required">Celular</label>
+                <input id="cel" type="tel" placeholder="(00) 00000-0000" required>
+              </div>
+              <div class="col-6">
+                <label for="email" class="required">E-mail</label>
+                <input id="email" type="email" placeholder="voce@exemplo.com" required>
+              </div>
+            </fieldset>
+          </form>
+
+          <!-- STEP 2 -->
+          <form id="step-2" class="step-pane" hidden>
+            <fieldset class="form-grid">
+              <legend>Família e Situação Social</legend>
+              <div class="col-6">
+                <label for="bolsa" class="required">Participa do Bolsa Família?</label>
+                <select id="bolsa" required>
+                  <option value="">Selecione</option>
+                  <option>Sim</option>
+                  <option>Não</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="dependentes">Dependentes no domicílio</label>
+                <input id="dependentes" type="number" min="0" value="0">
+              </div>
+              <div class="col-6">
+                <label for="renda">Renda familiar (R$)</label>
+                <input id="renda" type="number" min="0" step="0.01" placeholder="0,00">
+              </div>
+              <div class="col-6">
+                <label for="beneficios">Outros benefícios</label>
+                <select id="beneficios">
+                  <option value="">Selecione</option>
+                  <option>Auxílio Gás</option>
+                  <option>BPC</option>
+                  <option>Nenhum</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="situacao">Situação atual</label>
+                <select id="situacao">
+                  <option value="">Selecione</option>
+                  <option>Desempregado</option>
+                  <option>Trabalho informal</option>
+                  <option>Empregado formal (buscando recolocação)</option>
+                </select>
+              </div>
+            </fieldset>
+          </form>
+
+          <!-- STEP 3 -->
+          <form id="step-3" class="step-pane" hidden>
+            <fieldset class="form-grid">
+              <legend>Formação Acadêmica</legend>
+              <div class="col-6">
+                <label for="escolaridade" class="required">Escolaridade</label>
+                <select id="escolaridade" required>
+                  <option value="">Selecione</option>
+                  <option>Fundamental incompleto</option>
+                  <option>Fundamental completo</option>
+                  <option>Médio incompleto</option>
+                  <option>Médio completo</option>
+                  <option>Técnico/Profissionalizante</option>
+                  <option>Superior incompleto</option>
+                  <option>Superior completo</option>
+                  <option>Pós-graduação</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="idiomas">Idiomas</label>
+                <select id="idiomas">
+                  <option value="">Selecione</option>
+                  <option>Inglês (básico)</option>
+                  <option>Inglês (intermediário)</option>
+                  <option>Inglês (avançado)</option>
+                  <option>Espanhol (básico)</option>
+                  <option>Espanhol (intermediário)</option>
+                  <option>Espanhol (avançado)</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="cursos">Cursos adicionais</label>
+                <textarea id="cursos" placeholder="Liste cursos e certificações relevantes"></textarea>
+              </div>
+            </fieldset>
+          </form>
+
+          <!-- STEP 4 -->
+          <form id="step-4" class="step-pane" hidden>
+            <fieldset class="form-grid">
+              <legend>Experiência Profissional</legend>
+              <div class="col-12">
+                <label for="areas">Áreas já trabalhadas</label>
+                <select id="areas" multiple size="6" aria-describedby="areas-help">
+                  <option>Comércio e Vendas</option>
+                  <option>Serviços Gerais / Limpeza</option>
+                  <option>Construção Civil</option>
+                  <option>Transporte e Logística</option>
+                  <option>Atendimento ao Público</option>
+                  <option>Tecnologia e Informática</option>
+                  <option>Agricultura</option>
+                  <option>Saúde e Cuidados</option>
+                  <option>Educação</option>
+                  <option>Outros</option>
+                </select>
+                <div id="areas-help" class="muted">Segure Ctrl/Cmd para selecionar mais de uma opção.</div>
+              </div>
+              <div class="col-6">
+                <label for="ultimo-cargo">Último cargo</label>
+                <input id="ultimo-cargo" type="text">
+              </div>
+              <div class="col-3">
+                <label for="inicio">Início</label>
+                <input id="inicio" type="date">
+              </div>
+              <div class="col-3">
+                <label for="fim">Fim</label>
+                <input id="fim" type="date">
+              </div>
+              <div class="col-12">
+                <label for="motivo">Motivo da saída (opcional)</label>
+                <input id="motivo" type="text">
+              </div>
+              <div class="col-12">
+                <label for="cv">Currículo (PDF)</label>
+                <div class="upload" id="cv"><strong>Solte o arquivo aqui</strong><p>ou clique para localizar</p></div>
+              </div>
+            </fieldset>
+          </form>
+
+          <!-- STEP 5 -->
+          <form id="step-5" class="step-pane" hidden>
+            <fieldset class="form-grid">
+              <legend>Competências e Preferências</legend>
+              <div class="col-12">
+                <label>Competências pessoais</label>
+                <div class="form-grid">
+                  <label class="col-3"><input type="checkbox"> Trabalho em equipe</label>
+                  <label class="col-3"><input type="checkbox"> Comunicação</label>
+                  <label class="col-3"><input type="checkbox"> Organização</label>
+                  <label class="col-3"><input type="checkbox"> Liderança</label>
+                  <label class="col-3"><input type="checkbox"> Uso de computador</label>
+                  <label class="col-3"><input type="checkbox"> Habilidades manuais</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <label for="interesse">Áreas de interesse</label>
+                <select id="interesse" multiple size="6">
+                  <option>Comércio e Vendas</option>
+                  <option>Serviços Gerais / Limpeza</option>
+                  <option>Construção Civil</option>
+                  <option>Transporte e Logística</option>
+                  <option>Atendimento ao Público</option>
+                  <option>Tecnologia e Informática</option>
+                  <option>Agricultura</option>
+                  <option>Saúde e Cuidados</option>
+                  <option>Educação</option>
+                  <option>Remoto</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="dispon">Disponibilidade de horário</label>
+                <select id="dispon" multiple size="6">
+                  <option>Manhã</option>
+                  <option>Tarde</option>
+                  <option>Noite</option>
+                  <option>Fins de semana</option>
+                  <option>Escala flexível</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="modalidade">Modalidade</label>
+                <select id="modalidade">
+                  <option value="">Selecione</option>
+                  <option>Presencial</option>
+                  <option>Híbrido</option>
+                  <option>Remoto</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="mobilidade">Mobilidade</label>
+                <select id="mobilidade">
+                  <option value="">Selecione</option>
+                  <option>Somente no município</option>
+                  <option>Até 20 km</option>
+                  <option>Até 50 km</option>
+                  <option>Qualquer lugar do estado</option>
+                </select>
+              </div>
+            </fieldset>
+          </form>
+
+          <!-- STEP 6 -->
+          <form id="step-6" class="step-pane" hidden>
+            <fieldset class="form-grid">
+              <legend>Inclusão e Acessibilidade</legend>
+              <div class="col-6">
+                <label for="pcd">Pessoa com deficiência?</label>
+                <select id="pcd">
+                  <option value="">Selecione</option>
+                  <option>Não</option>
+                  <option>Sim</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="tipo-pcd">Tipo de deficiência (se houver)</label>
+                <input id="tipo-pcd" type="text" placeholder="Visual, auditiva, física, intelectual...">
+              </div>
+              <div class="col-12">
+                <label for="adapt">Precisa de adaptações?</label>
+                <textarea id="adapt" placeholder="Descreva as adaptações necessárias"></textarea>
+              </div>
+              <div class="col-6">
+                <label for="idoso">Idoso (60+)?</label>
+                <select id="idoso">
+                  <option value="">Selecione</option>
+                  <option>Não</option>
+                  <option>Sim</option>
+                </select>
+              </div>
+            </fieldset>
+          </form>
+
+          <!-- STEP 7 -->
+          <form id="step-7" class="step-pane" hidden>
+            <fieldset class="form-grid">
+              <legend>Questionário Motivacional</legend>
+              <div class="col-12">
+                <label for="motivo-part">Por que deseja participar?</label>
+                <select id="motivo-part">
+                  <option value="">Selecione</option>
+                  <option>Melhorar renda familiar</option>
+                  <option>Primeira experiência</option>
+                  <option>Recolocação no mercado</option>
+                  <option>Transição de carreira</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="cursos-gratis">Toparia fazer cursos gratuitos do governo?</label>
+                <select id="cursos-gratis">
+                  <option value="">Selecione</option>
+                  <option>Sim</option>
+                  <option>Não</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="observacoes">Observações (opcional)</label>
+                <textarea id="observacoes" placeholder="Algo que queira destacar para os empregadores"></textarea>
+              </div>
+            </fieldset>
+          </form>
+
+          <!-- STEP 8 -->
+          <form id="step-8" class="step-pane" hidden>
+            <fieldset class="form-grid">
+              <legend>Anexos</legend>
+              <div class="col-6">
+                <label>Documento de identificação</label>
+                <div class="upload"><strong>Solte o arquivo aqui</strong><p>PDF, PNG ou JPG (máx. 5MB)</p></div>
+              </div>
+              <div class="col-6">
+                <label>Comprovante de residência</label>
+                <div class="upload"><strong>Solte o arquivo aqui</strong><p>PDF, PNG ou JPG (máx. 5MB)</p></div>
+              </div>
+              <div class="col-6">
+                <label>Comprovante de escolaridade</label>
+                <div class="upload"><strong>Solte o arquivo aqui</strong><p>PDF, PNG ou JPG (máx. 5MB)</p></div>
+              </div>
+              <div class="col-6">
+                <label>Laudo PCD (se houver)</label>
+                <div class="upload"><strong>Solte o arquivo aqui</strong><p>PDF, PNG ou JPG (máx. 5MB)</p></div>
+              </div>
+              <div class="col-12 muted">Arquivos ilegíveis podem ocasionar indeferimento da inscrição.</div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="actions" role="toolbar" aria-label="Ações do formulário">
+          <button class="btn btn-sec" type="button" id="prev">◀ Voltar</button>
+          <button class="btn btn-primary" type="button" id="save">Salvar</button>
+          <button class="btn btn-primary" type="button" id="next">Salvar e Continuar ▶</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 gov.br — Prototipação visual do serviço “Conecta Cidadania. Este é um mockup não funcional para fins de design.
+  </footer>
+
+  <script>
+    
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const panes = Array.from(document.querySelectorAll('.step-pane'));
+    let current = 0;
+
+    function showStep(i){
+      panes.forEach((p,idx)=>{p.hidden = idx!==i; p.setAttribute('aria-hidden', idx!==i)});
+      steps.forEach((s,idx)=>{
+        s.classList.toggle('active', idx===i);
+        s.classList.toggle('done', idx<i);
+      });
+      current = i;
+    }
+
+    steps.forEach((s,idx)=>{
+      s.querySelector('button').addEventListener('click',()=>showStep(idx));
+    });
+
+    document.getElementById('next').addEventListener('click',()=>{
+      if(current < panes.length-1) showStep(current+1);
+    });
+    document.getElementById('prev').addEventListener('click',()=>{
+      if(current > 0) showStep(current-1);
+    });
+
+    document.getElementById('save').addEventListener('click',()=>{
+      alert('Dados salvos (protótipo).');
+    });
+
+    
+    showStep(0);
+  </script>
+</body>
+</html>
