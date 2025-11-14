@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conecta Cidadania — Cadastro de Solicitação</title>
+  <link rel="stylesheet" href="C:\Users\HP\Documents\GitHub\grupo16\front-end\css\solicitacao.css">
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="wrap">
+      <div class="brand" aria-label="gov.br">
+        <div class="logo" aria-hidden="true">br</div>
+        <div>
+          <div style="font-size:18px">gov.br</div>
+          <div class="service-title">Conecta Cidadania — Cadastro de Solicitação</div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav class="crumbs" aria-label="Você está em">
+    <div class="wrap">
+      <a href="#">Início</a> › <a href="#">Sistemas</a> › <span>Conecta Cidadania</span> › <strong>Nova Solicitação</strong>
+    </div>
+  </nav>
+
+  <main class="container" role="main">
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">Nova Solicitação</div>
+        <div class="muted">Campos com * são obrigatórios</div>
+      </div>
+      <div class="card-body">
+        <div class="alert" role="note">
+          <strong>Informação</strong>
+          Preencha todos os campos obrigatórios. A data de abertura será gerada automaticamente ao salvar.
+        </div>
+
+        <form id="form-solicitacao">
+          <fieldset class="form-grid">
+            <legend>Dados do Solicitante</legend>
+            
+            <div class="col-6">
+              <label for="nome" class="required">Nome do solicitante</label>
+              <input id="nome" type="text" placeholder="Digite o nome completo" required>
+            </div>
+
+            <div class="col-6">
+              <label for="matricula" class="required">Matrícula</label>
+              <input id="matricula" type="text" placeholder="Ex: 123456" required>
+            </div>
+
+            <div class="col-6">
+              <label for="cargo" class="required">Cargo</label>
+              <select id="cargo" required>
+                <option value="">Selecione</option>
+                <option>Professor</option>
+                <option>Funcionário</option>
+                <option>Técnico</option>
+                <option>Coordenador</option>
+                <option>Gestor</option>
+                <option>Outro</option>
+              </select>
+            </div>
+
+            <div class="col-6">
+              <label for="local" class="required">Local do problema</label>
+              <input id="local" type="text" placeholder="Ex: Laboratório 3, Sala 201, Setor Administrativo" required>
+            </div>
+
+            <div class="col-12"><legend>Detalhes da Solicitação</legend></div>
+
+            <div class="col-12">
+              <label for="descricao" class="required">Descrição detalhada da solicitação</label>
+              <textarea id="descricao" placeholder="Descreva o problema ou necessidade de forma clara e detalhada..." required></textarea>
+              <div class="muted">Quanto mais detalhes você fornecer, mais rápido poderemos resolver sua solicitação.</div>
+            </div>
+
+            <div class="col-6">
+              <label for="categoria" class="required">Categoria</label>
+              <select id="categoria" required>
+                <option value="">Selecione</option>
+                <option>TI - Tecnologia da Informação</option>
+                <option>Manutenção - Reparos gerais</option>
+                <option>Estrutural - Obras e reformas</option>
+                <option>Equipamentos - Aquisição/reparo</option>
+                <option>Limpeza e Higiene</option>
+                <option>Segurança</option>
+                <option>Outro</option>
+              </select>
+            </div>
+
+
+          </fieldset>
+        </form>
+      </div>
+      <div class="actions" role="toolbar" aria-label="Ações do formulário">
+        <button class="btn btn-sec" type="button" id="cancelar">Cancelar</button>
+        <button class="btn btn-primary" type="button" id="salvar">Salvar Solicitação</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 gov.br — Sistema de Solicitações "Conecta Cidadania"
+  </footer>
+
+  <script src="js/utils-storage.js"></script>
+  <script src="js/solicitacao.js"></script>
+
+</body>
+</html>

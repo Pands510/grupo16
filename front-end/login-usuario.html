@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Sistema de Solicitações</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>Login - Usuário</h2>
+
+        <div id="errorMsg" class="error" style="display:none;">
+            Usuário ou senha incorretos
+        </div>
+
+        <form id="form-login">
+
+            <label for="user">Usuário</label>
+            <input type="text" id="user" name="usuario" required>
+
+            <label for="pass">Senha</label>
+            <input type="password" id="pass" name="senha" required>
+
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>
